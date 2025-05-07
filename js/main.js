@@ -46,7 +46,7 @@
 
         setTimeout(function() {
             triggerHeight = hero.offsetHeight - 170;
-        }, 300);
+        }, 60);
 
         window.addEventListener('scroll', function () {
 
