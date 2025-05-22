@@ -10,14 +10,9 @@
    * -------------------------------------------------- */
   const ssPreloader = function () {
     const siteBody = document.querySelector("body");
-    const preloader = document.querySelector("#preloader");
 
-    html.classList.remove("ss-preload");
     html.classList.add("ss-loaded");
-
     siteBody.classList.add("ss-show");
-    e.target.style.display = "none";
-    preloader.removeEventListener(e.type, afterTransition);
 
 
     // const siteBody = document.querySelector("body");
