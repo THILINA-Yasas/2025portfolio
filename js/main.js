@@ -293,3 +293,57 @@
     ssMoveTo();
   })();
 })(document.documentElement);
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const counters = document.querySelectorAll(".counter-items__item .num");
+  const options = {
+    threshold: 0.6,
+  };
+
+  const startCounting = (counter) => {
+    const targetText = counter.textContent.trim();
+    const numberOnly = parseInt(targetText.replace(/\D/g, ""));
+    const suffix = targetText.replace(/[0-9]/g, "").trim();
+
+    let count = 0;
+    const speed = numberOnly < 2000 ? 30 : 1;
+    const increment = Math.ceil(numberOnly / 100);
+
+    const updateCounter = () => {
+      if (count < numberOnly) {
+        count += increment;
+        if (count > numberOnly) count = numberOnly;
+        counter.innerHTML = `${count}<span>${suffix}</span>`;
+        requestAnimationFrame(updateCounter);
+      } else {
+        counter.innerHTML = `${numberOnly}<span>${suffix}</span>`;
+      }
+    };
+
+    updateCounter();
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const counter = entry.target;
+
+      if (entry.isIntersecting) {
+        // Start counting when visible
+        startCounting(counter);
+      } else {
+        // Reset counter text when not visible
+        const originalText = counter.getAttribute("data-original-text");
+        if (originalText) {
+          counter.innerHTML = originalText;
+        }
+      }
+    });
+  }, options);
+
+  counters.forEach((counter) => {
+    // Store the original text to reset later
+    counter.setAttribute("data-original-text", counter.innerHTML);
+    observer.observe(counter);
+  });
+});
